@@ -216,10 +216,10 @@ void BankDetails::title_diplay(ll flag=0)
     cout.width(15);
     cout<<"Address";
     cout.width(15);
-    cout<<"Account Balance"<<endl<<endl;
+    cout<<"Account Balance"<<endl<<endl<<endl;
 }
 void BankDetails::display(ll flag=0)  //displaying the details for one person
-{ 
+ { 
         if(flag==0)
         {  
             cout<<"\n\n**********************************************************************************\n\n";
@@ -258,7 +258,7 @@ void display_info_on_account(BankDetails* b_acc,ll acc_no,ll last)
     {
         if(b_acc[i].get_accNumber()==acc_no)
         {
-            read(b_acc[i]);
+           // read(b_acc[i]);//problem hai
             return b_acc[i].display();
         }
     }
@@ -269,8 +269,9 @@ void display_all(BankDetails b_acc[],ll last)
     b_acc[0].title_diplay(1);
     for(int i=1;i<last;i++)
     {   
-        read(b_acc[i]);
+       // read(b_acc[i]);// yaha problem hai
         b_acc[i].display(1);
+        cout<<"\n";
     }
     cout<<"\n\n**********************************************************************************\n";
 
@@ -278,9 +279,10 @@ void display_all(BankDetails b_acc[],ll last)
 
 void initialize_bank_account(BankDetails b_acc[],ll last,ll acc_no,ll m_id,string name,string acc_type,string address,ld balance)
 {
-    int j=1001;
-    for(int i=1;i<last;i++,j++)
-    {
+    int j=1001,i;
+    
+    for( i=1;i<last;i++,j++)
+    {  
         b_acc[i].set_customerId(i);
         b_acc[i].set_recordNo(j);
         b_acc[i].set_accNumber(acc_no);
@@ -302,10 +304,11 @@ void initialize_bank_account(BankDetails b_acc[],ll last,ll acc_no,ll m_id,strin
         b_acc[i].set_balanceAmount(balance);
         balance+=balance;
         m_id=i%12+1;
-        b_acc->set_monthId(m_id);
+        b_acc[i].set_monthId(m_id);
 
     }
-    write(b_acc,last);
+    
+    //write(b_acc,last);//problem hai
     
 }
 ll retrieveRecordNo(BankDetails b_acc[],ll acc_No,ll last)
@@ -321,8 +324,8 @@ ll retrieveRecordNo(BankDetails b_acc[],ll acc_No,ll last)
     return -1;
 }
 bool accountExist(BankDetails  b_acc[],ll cus_id,ll last)
-{
-    if(cus_id>=1&&cus_id<last)
+{   
+    if(b_acc[cus_id].get_customerId()!=-1)
     {
         return true;
     }
@@ -336,20 +339,21 @@ BankDetails BankDetails::addNewCustomer(BankDetails  b_acc,ll last)
     string address;
     ll month_id;
     ld balance;
-    cout<<"\nPlease Enter the Account No.:- ";
+    cout<<"\nPlease Enter the Account No. (int):- ";
     cin>>acc_no;
-    cout<<"\nPlease Enter the Name :- ";
+    cout<<"\nPlease Enter the Name (string):- ";
     cin>>name;
-    cout<<"\nPlease Enter the  Account Type as type1(current) or type2(saving)  :- ";
+    cout<<"\nPlease Enter the  Account Type as type1(for current) or type2(for saving) (string) :- ";
     cin>>acc_type;
-    cout<<"\nPlease Enter the  Month of Creation  :- ";
+    cout<<"\nPlease Enter the  Month of Creation  (int):- ";
     cin>>month_id;
-    cout<<"\nPlease Enter the  Address  :- ";
+    cout<<"\nPlease Enter the  Address  (string):- ";
     cin>>address;
-    cout<<"\nPlease Enter the Balance :- ";
+    cout<<"\nPlease Enter the Balance (double):- ";
     cin>>balance;
 
     b_acc.set_customerId(last);
+    b_acc.set_recordNo(1001+last-1);
     b_acc.set_accNumber(acc_no);
     b_acc.set_depositorName(name);
     b_acc.set_accType(type1);
@@ -378,7 +382,7 @@ BankDetails BankDetails::deleteAccount(BankDetails b_acc)
 BankDetails BankDetails::deposit(BankDetails  b_acc)   //depositing an amount
 {
         ld depositAmount;
-        cout<<"\n Enter Deposit Amount = ";
+        cout<<"\nEnter Deposit Amount = ";
         cin>>depositAmount;
         b_acc.set_balanceAmount(b_acc.get_balanceAmount()+depositAmount);
         return b_acc;
@@ -386,11 +390,11 @@ BankDetails BankDetails::deposit(BankDetails  b_acc)   //depositing an amount
 BankDetails BankDetails::withdraw(BankDetails  b_acc)  //withdrawing an amount
 {
         ld withdrawAmount;
-        cout<<"\n Enter Withdraw Amount :- ";
+        cout<<"\nEnter Withdraw Amount :- ";
         cin>>withdrawAmount;
         if(withdrawAmount>balanceAmount)
         {
-          cout<<"\n Cannot Withdraw Amount\n";
+          cout<<"\nCannot Withdraw Amount\n";
         }
         else
         {
@@ -407,6 +411,7 @@ void BankDetails::interestPerMonth(ll m_id,BankDetails b_acc)
         int rate=1;
         cout<<"\nRate of interest is 1% per month\n";
         float interest=b_acc.get_balanceAmount()*rate*dif/100.0;
+        cout<<"\nInterest :- "<<interest<<"\n";
     }
     // else
     // {
