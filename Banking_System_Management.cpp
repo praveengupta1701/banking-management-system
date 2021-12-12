@@ -31,17 +31,17 @@ for more than a month
 #include "bank_detail.h"
 using namespace std;
 
-#define NO_OF_CUSTOMER 10000
+#define NO_OF_CUSTOMER 100
 ll lastaccount=21;
 
 int main()
 {
        
         BankDetails b_acc[NO_OF_CUSTOMER];
-        ll acc_no=100,m_id=1;
+        ll acc_no=1001,month_id=1;
         string name="a", acc_type,add="0";
         ld balance=100.0;
-        initialize_bank_account(b_acc,lastaccount,acc_no,m_id,name,acc_type,add,balance);
+        initialize_bank_account(b_acc,lastaccount,acc_no,month_id,name,acc_type,add,balance);
         
         //display_all(b_acc,20);
 
@@ -187,10 +187,10 @@ int main()
                       
               /*Calculate  the  interest  to  date  on  the  deposit  if  a particular  customer has  not  withdrawn  for  more  than a month.*/
               case 12:
-                m_id=b_acc[lastaccount-1].get_monthId();
+                month_id=b_acc[lastaccount-1].get_monthId();
                 cout<<"\nPlease Enter the customer Id :- ";
                 cin>>cus_id;
-                b_acc[cus_id].interestPerMonth(m_id,b_acc[cus_id]);
+                b_acc[cus_id].interestPerMonth(month_id,b_acc[cus_id]);
                 
                 break;
               
